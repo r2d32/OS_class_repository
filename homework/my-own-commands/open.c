@@ -3,8 +3,8 @@
 ** CMSI387: Operating System
 ** chmod.c 
 **
-** This program demonstrates invocation of the sysinfo system call
-** (116) using the syscall function.  Some of its output is then displayed.
+** This program demonstrates invocation of the open system call
+** (5) using the syscall function.  Some of its output is then displayed.
 **
 ** Contributions made by Abdul Alzaid, Carlos Agudo, and Jonathan Piatos
 **
