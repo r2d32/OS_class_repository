@@ -20,6 +20,9 @@
 int main(int argc, char *argv[]){
 
     int result = syscall(10, argv[1], R_OK);
+    // JD: Consider yourself lucky that ^^ extra arguments are
+    //     effectively ignored by the system call.  Still, this
+    //     shows additional evidence of copy-paste sloppiness.
 
     if (result == 0) {
         //message used simply for testing the syscall
