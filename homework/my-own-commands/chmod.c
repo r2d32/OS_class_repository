@@ -18,7 +18,9 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-
+    // JD: OK but still hardcoded.  Technically within bounds of the assignment,
+    //     but really, with 3 brains working on this, you couldn't have done
+    //     *some* argument parsing so that this command becomes more flexible?
 	int result = syscall(15, argv[1], 00004);
 
 	if (result == 0) {

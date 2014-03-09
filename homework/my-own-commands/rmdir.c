@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
   // We demonstrate the use of command-line arguments here.
   // But note the non-existent error handling (all the better
   // to illustrate the error code below).
+  // JD: ^^^^ I think this is copy-paste leftover.
   int result = syscall(40, argv[1]);
 
   // A result of -1 means that something went wrong.  Otherwise,

@@ -1,7 +1,7 @@
 /* 
 **
 ** CMSI387: Operating System
-** rename.c
+** rename.c // JD: Geez you guys, there's 3 of you and you can't copy-paste properly O_o
 **
 ** Description: This program demonstrates invocation of the sysinfo
 ** system call (116) using the syscall function. 

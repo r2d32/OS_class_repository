@@ -15,7 +15,7 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-
+    // JD: What's with the extra blank lines?
     
     int result = syscall(38, argv[1], argv[2]);
     

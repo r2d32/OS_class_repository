@@ -17,7 +17,8 @@
 int main(int argc, char *argv[]) {
     
     int result = syscall(9, argv[1], argv[2]);
-    
+
+    // JD: "Renaming?"  That is not a synonym for "link."
     if (result == -1) {
         char *errorMessage = "This renaming is wrong\n";
         syscall(4, 2, errorMessage, strlen(errorMessage));
