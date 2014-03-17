@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<!-- viewport meta to reset iPhone inital scale -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ubuntu-kernel-howto</title>
+
+<!-- css3-mediaqueries.js for IE8 or older -->
+<!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="general.css" />
+<link rel="stylesheet" type="text/css" href="code.css" />
+
+</head>
+
+<body>
+
+<div id="pagewrap">
+
+	<div id="header">
+		<h1>HOW TO MAKE A KERNEL SYSTEM CALL</h1>
+		<p>Here is a short tutorial on how to add a Simple System Call to the Linux 3.13.0 Kernel</p>
+	</div>
+
+	<div id="content">
+		<h2 id="build">Build Your Own Kernel</h2>
+		<p>Install git</p>
+		<p class="code">sudo apt-get install git-core</p>
+		<p>Clone Ubuntu trusty to the directory where you will be 
+			working on </p>
+		<p class="code">git clone</p>
+		<p>Build the kernel environment using the following command</p>
+		<p class="code">sudo apt-get build-dep linux-image-$(uname -r)</p>
+		<p>Install fakeroot</p>
+		<p class="code">sudo apt-get install fakeroot</p>
+		<p>Go to the directory where you installed the kernel and run
+		 the following commands to check kernel's directory for unnecessary files and set up the kernel environment</p>
+		<p class="code">fakeroot debian/rules clean<br>fakeroot debian/rules binary-headers binary-generic</p>
+		<p>Use the following command to build the kernel and reboot</p>
+		<p class = "code">sudo dpkg -i linux*3.13.0-17.37*.deb<br>sudo reboot</p>
+
+		<h2 id= "buildSys">Building Your Own System Call</h2>
+		<p><strong>Files To Create</strong></p>
+
+		<p>Create a new directory in the root folder of the kernel source code for your new sys call. In my case from the kernel source directory / hello / sys_hello.c. Here is sys_hello.c :</p>
+		<p class="code">    #include <'linux/kernel.h'><br><br>    asmlinkage long sys_hello(void){<br>        printk("hello, world!");<br>        return 0;<br>    }</p>
+		<p>Also, a Makefile must be created in the directory in order to produce a .o file after sys_hello.c is compiled.<br>Here is how the makefile should look:</p>
+		<p class="code">obj-y := sys_hello.o</p>
+
+		<p id="modify"><strong>Modify Files</strong></p>
+
+		<p>Dive into ubuntu-trusty/arch/x86/syscalls/syscall_32.tbl. At the end of the syscalls_32.tbl file, you will see the following</p>
+		<p class="code">350   i386   finit_module        sys_finit_module</p>
+		<p>At the end of this file, you will need to add another line of code for your custom system call:</p>
+		<p class="code">351   i386   sys_hello   sys_hello</p>
+		<p>What we did was create a new constant to be associate with our custom system call. We also had to increment the total number of syscall by 1, to 272, if it is not already 272. Finally dive into ubuntu-trusty/include/linux/syscalls.h. In the syscalls.h file, there is a long list of functions of the system calls. Right before the #endif add our custom function like below.</p>
+		<p class="code">asmlinkage long sys_finit_module(int fd, const char __user *uargs, int flags);<br>asmlinkage long sys_hello(void);<br>#endif</p>
+		<p>Lastly, dive into ubuntu-trusty/Makefile. Within the Makefile, there is a line of code that looks like this:</p>
+		<p class = "code">core-y        += kernel/ mm/ fs/ ipc/ security/ crypto/ block/</p>
+		<p>Add hello/ to the end of the line like the following:</p>
+		<p class="code">core-y        += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ hello/</p>
+		<p>By adding this line, when our kernel is building it will look into the hello/ folder to use our created files.</p>
+		<h2 id ="patch">Create a Patch for git</h2>
+		<p>Go to the directory where your ubuntu-trusty is located ( in my case /Desktop/KernelStuff )and create a patchfile by runung the next command:</p>
+		<p class="code">edit patchfile</p>
+		<p>Save it and run the next command</p>
+		<p class="code">git diff master > ~/Desktop/KernelStuff/patchfile</p>
+		<h2 id="test">Test System Call</h2>
+		<p>Before testing the system call, you need to rebuild the kernel. After the kernel has been rebuilt, you can test. Write the following program that will use the system call:</p>
+		<p class="code">#include stdio.h<br>#include linux/kernel.h<br>#include sys/syscall.h<br>#define __NR_sys_hello 350<br><br>int main(int argc, char *argv[]) {<br>    long int a = syscall(__NR_sys_hello);<br>    return 0;<br>} </p>
+		<p>Compile and run! To see if the system call worked run the following command:</p>
+		<p class="code">dmesg</p>
+		<p>This command is used to print the message buffer of the kernel</p>
+	</div>
+
+	<div id="sidebar">
+		<h3>Go to Subsections</h3>
+		<a href="#build"><strong>Build Your Own Kernel</strong></a><br>
+	    <a href="#buildSys"><strong>Build Your Own System call</strong></a><br>
+		<a href="#buildSys"> - Files to create</a><br>
+		<a href="#modify"> - Files to Modify</a><br>
+		<a href="#patch"><strong>Create A Patch</strong></a><br>
+		<a href="#test"><strong>Test The Call</strong></a>
+	</div>
+	
+	<!--<div id="footer">
+		<h4>Footer</h4>
+	</div>-->
+
+</div>
+
+</body>
+</html>
