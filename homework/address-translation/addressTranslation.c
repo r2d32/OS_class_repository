@@ -13,5 +13,24 @@ void setPageTable(pagetable *pt) {
 }
 
 int getPhysical(int logical) {
-    // TODO
+
+
+    int addressUpperLimmit = 255;
+
+    if (logical < 0 || logical > addressUpperLimmit) {
+        return ERR_OUT_OF_RANGE;
+    }
+
+    int higherOrderBits = ((logical & PAGEMASK) >> PAGEBITS);
+
+    if (!ptr[higherOrderBits].valid) {
+        return ERR_INVALID;
+    }
+
+    int lowerOrderBits = (logical & PAGESIZE);
+
+    int physicalAddressTranslation = ( ( (ptr[higherOrderBits].frame) << PAGEBITS ) + lowerOrderBits );
+
+    return physicalAddressTranslation;
+
 }
