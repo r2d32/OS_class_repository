@@ -11,6 +11,11 @@
 
 
 // METHOD TO EXECUTE "cd" IN THE SHELL//
+
+// JD: OK, fine, but what kind of a name is "rjhchdir" ???
+//
+//     Plus, the spacing in the function declaration and if-clause
+//     is quite horrible.
 int rjhchdir( char * directory){
     if(directory != NULL){
         printf("You changed directory to %s.\n", directory);
@@ -32,6 +37,8 @@ int main() {
     char command[256];
     int i;
 
+    // JD: Uhhhh...what are these?  They are completely unused.  You put comments
+    //     on some really obvious code, but for this one you say nothing???
     char line[4096] = {0};
     char safeline[4096] = {0};
 
@@ -48,11 +55,15 @@ int main() {
         // SHELL INPUT //
         printf("Please enter command > ");
         fgets(command, 256, stdin);
+        // JD: *Almost* there with proper Ctrl-D handling, but sometimes segfaulting because
+        //     of something you missed regarding fgets.
 
         int commandLength = strlen(command);
         command[commandLength - 1] = 0;
 
         // REMOVE ENDING SPACES //
+        // JD: while, if, and for are not functions, and so it is better to distinguish
+        //     them by adding a space between the keywords and the left parenthesis.
         while(strcmp(&command[commandLength - 2], spaceDelimiter) == 0){
             command[commandLength - 2] = 0;
             commandLength--;
@@ -78,8 +89,11 @@ int main() {
         // CHECK FOR THE DIFFERENT SET OF COMMANDS //
         if(strcmp(args[0], "cd") == 0) {
             if(args[1]== NULL) {
+                // JD: WTF does "Pleas wite" mean?  >:-)
                 printf("Pleas wite a directory after 'cd'\n");
             } else {
+                // JD: I still can't get over that name. "rjh"?  You didn't copy this
+                //     code from someone else did you? (with initials R.J.H.)
                 rjhchdir(args[1]);
             }
 
