@@ -14,10 +14,10 @@ Commit and push this mini-annotated bibliography in any widely-readable format t
 ##Article 1: 
 
 ###Limitations of Dijkstra's Semaphore Primitives and Petri nets states 
-ACM SIGOPS Operating Systems Review
-Volume 7 Issue 4, October 1973 
-S. Rao Kosaraju	
-Pages 122 - 126
+ACM SIGOPS Operating Systems Review</br>
+Volume 7 Issue 4, October 1973 </br>
+S. Rao Kosaraju	</br>
+Pages 122 - 126</br>
 
 *Connection to Previous Work*
 ***
