@@ -2,7 +2,8 @@
  * Test driver for our software paging unit.
  */
 #include "addressTranslation.h"
-#include "addressTranslation.c"
+#include "addressTranslation.c" // JD: What is this????  This is not how you
+                                //     you handle a multiple-file C program!
 
 #include <assert.h>
 

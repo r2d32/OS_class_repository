@@ -53,12 +53,21 @@ int main() {
 void isPhilosopherGettingHungry(int philo){
     if (rand() % RANDOM_FACTOR == 0 ) { 
         philoStates[philo] = HUNGRY;
+
+        // JD: This "console log" approach to providing feedback is technically correct,
+        //     but in the end is not very readable---one needs to read vertically and
+        //     keep track of who does what manually.  This defeats the very purpose of
+        //     the output, which is to let people easily perceive the state of the
+        //     system and detect how errors arise.  Better approach is to print a
+        //     "snapshot" of the philosophers and forks---this will tell the user what
+        //     is going on at that moment,
         printf("Philosopher %d is HUNGRY\n", philo);
     }
     sleep(1);
 }
 
 void makePhiloGrabbForksAndEat(int philo){
+    // JD: OK, asymmetry, I can go with that...
     if (philo % 2 == 0) {   
         grabFork(philo, philo);   
         grabFork(philo, (philo + 1) % PHILOSOPHERS);  
@@ -75,18 +84,24 @@ void grabFork(int philo, int forkIndex) {
     currentlyUsedForks[forkIndex]++;
     printf("Philosopher %d is GRABBING fork# %d\n", philo, forkIndex);
     if (currentlyUsedForks[forkIndex] > 1) {
-        printf("MORE THAN ONE PHILOSOPHER GRABBED SAME FORK\n");   
+        printf("MORE THAN ONE PHILOSOPHER GRABBED SAME FORK\n");
+        // JD: This is a violation---you should bail out right here.
+        exit(-1);
     }
     sleep(1);
 }
 
 void putDownFork(int philo, int forkIndex) {
     printf("Philosopher %d is PUTTING DOWN fork# %d\n", philo, forkIndex);
+    // JD: You can also sanity-check here---make sure that the fork is indeed
+    //     being used before putting it down.
     currentlyUsedForks[forkIndex]--;
     pthread_mutex_unlock(&forkSemaphore[forkIndex]);  //Sets the mutex for fork available
     sleep(1);
 }
 
+// JD: I see what you're trying to do here but this function is actually never called.
+//     Presumably this part is unfinished.
 void checkIfAllPhilosophersWereFed(int philo){
     notFedAll = 0;
     philoMeals[philo]+=1;
