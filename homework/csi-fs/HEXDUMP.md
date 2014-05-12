@@ -75,6 +75,12 @@ Inode structure starts here at `0x1800`.
   *
 ```
 Here is the inode for the *Directory* folder.
+
+> JD: Some trouble with your approach here—it isn't clear how you knew
+>     that this is the inode for *Directory*.  Better to reference the
+>     directory data block first, then from there show how you determined
+>     the inode.
+
 ```
   00001d80  fd 41 e8 03 00 04 00 00  d7 6f 69 53 cd 6f 69 53  |.A.......oiS.oiS|
   00001d90  cd 6f 69 53 00 00 00 00  e8 03 02 00 02 00 00 00  |.oiS............|
@@ -85,6 +91,13 @@ Here is the inode for the *Directory* folder.
   00001df0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
 The inode for *non-empty1*.
+
+> JD: Here, for example, you claim the inode for *non-empty1*.  But, based on
+>     the directory data block you show later, the inode is actually `0e` and
+>     should therefore be located in `1e80`—you are off by one.  Had you made
+>     these computations more explicit, tracking this down would have been
+>     easier to do.
+
 ```
   00001e00  b4 81 e8 03 00 00 00 00  fd 6e 69 53 0d 6f 69 53  |.........niS.oiS|
   00001e10  ef 6e 69 53 00 00 00 00  e8 03 01 00 00 00 00 00  |.niS............|
@@ -94,6 +107,9 @@ The inode for *non-empty1*.
   00001e70  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
 This is the inode for *non-empty2*, which the hard link points to.
+
+> JD: No, as it turns out this is actually *non-empty1*.
+
 ```
   00001e80  b4 81 e8 03 16 00 00 00  0e 6f 69 53 0d 6f 69 53  |.........oiS.oiS|
   00001e90  0d 6f 69 53 00 00 00 00  e8 03 01 00 02 00 00 00  |.oiS............|
@@ -104,6 +120,10 @@ This is the inode for *non-empty2*, which the hard link points to.
   00001ef0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
 The inode for *text.txt*'s symbolic link.
+
+> JD: I don't see a file called *text.txt*.  For that matter, I don't see any
+>     sign of a symbolic link here.
+
 ```
   00001f00  b4 81 e8 03 00 00 00 00  47 6f 69 53 5e 6f 69 53  |........GoiS^oiS|
   00001f10  3e 6f 69 53 00 00 00 00  e8 03 01 00 00 00 00 00  |>oiS............|
@@ -127,6 +147,11 @@ This are the Directory Entries for files, links and directories. We have the fir
   *
 ```
 *lost+found* directory data block.
+
+> JD: Uhhhh, no, not by my calculation.  Again, if you showed *how* you
+>     determined that *lost+found* was in `4000`, I might be able to
+>     understand your thinking better.
+
 ```
   00004000  00 00 00 00 00 04 00 00  00 00 00 00 00 00 00 00  |................|
   00004010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
